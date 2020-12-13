@@ -1,91 +1,26 @@
-package com.example.helper;
+package com.example.favorite;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int TYPE_WIFI = 1;
-    public static final int TYPE_MOBILE = 2;
-    public static final int TYPE_NOT_CONNECTED = 3;
-
-    public static int getConnectivityStatus(Context context){
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        if(networkInfo != null){
-            int type = networkInfo.getType();
-            if(type == ConnectivityManager.TYPE_MOBILE){
-                return TYPE_MOBILE;
-            }else if(type == ConnectivityManager.TYPE_WIFI){
-                return TYPE_WIFI;
-            }
-        }
-        return TYPE_NOT_CONNECTED;
-    }
-
-    int [] ImageId = {R.drawable.graybell, R.drawable.redbell};
-    ImageView iv;
-    TextView textView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        iv = (ImageView)findViewById(R.id.imageView1);
+        // 즐겨찾기 추가한 역
+        ArrayList<String> list = new ArrayList<>();
+            list.add("동대구 복합 환승센터") ;
+            list.add("경북대학교 정문");
+        }
 
-        iv.setOnClickListener(new MyListener());
+        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+        RecyclerView recyclerView = findViewById(R.id.recycler1) ;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
 
-        textView = findViewById(R.id.textView);
-
-        Button imageButton = (Button) findViewById(R.id.settings);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), settings.class);
-                startActivity(intent);
-            }
-        }); // end intent
-
-    } // end onCreate
-
-    class MyListener implements View.OnClickListener {
-        int i = 0;
-        int length = ImageId.length;
-
-
-        @Override
-        public void onClick(View v){
-            iv.setImageResource(ImageId[i]);
-
-            i+=1;
-            if(i == ImageId.length) i = 0;
-
-            int status = getConnectivityStatus(getApplicationContext());
-            if(status == TYPE_MOBILE){
-                textView.setText("Wi-Fi에 연결되지 않았습니다.");
-            }else if (status == TYPE_WIFI){
-                textView.setText("");
-            }else {
-                textView.setText("Wi-Fi에 연결되지 않았습니다.");
-            }
-
-
-        } // end onClick
-
-    } // end MyListener()
-
-} // end Class
+        // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+        adaptercd adapter = new adaptercd(list) ;
+        recyclerView.setAdapter(adapter) ;
+    }
+}
