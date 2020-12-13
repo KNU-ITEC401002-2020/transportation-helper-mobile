@@ -1,0 +1,7 @@
+# transportation-helper-mobile
+대중교통 헬퍼 모바일 어플리케이션
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recycler1"
+    android:scrollbars="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
